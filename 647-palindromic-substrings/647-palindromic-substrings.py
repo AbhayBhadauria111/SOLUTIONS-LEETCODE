@@ -1,19 +1,30 @@
 class Solution:
     def countSubstrings(self, s: str) -> int:
+        DP=[[False for i in range(len(s)+1)]for j in range(len(s)+1)]
         count=0
-        for i in range(len(s)):
-            
-            j=i
-            k=i
-            while(j>=0 and k<len(s) and s[j]==s[k]):
-                count+=1
-                j-=1
-                k+=1
-            j=i
-            k=i+1
-            while(j>=0 and k<len(s) and s[j]==s[k]):
-                j-=1
-                k+=1
-                count+=1
+        for g in range(0,len(s)):
+            i=0
+            j=g
+            while(j<len(s)):
+                if (g==0):
+                    DP[i][j]=True
+                    count+=1
+                elif g==1:
+                    if s[i]==s[j]:
+                        DP[i][j]=True
+                        count+=1
+                    else:
+                        DP[i][j]=False
+                else:
+                    if s[i]==s[j]:
+                        DP[i][j]=DP[i+1][j-1]
+                        if DP[i][j]==True:
+                            count+=1
+                    else:
+                        DP[i][j]=False
+                j+=1
+                i+=1
         return count
-                
+                    
+                    
+                    

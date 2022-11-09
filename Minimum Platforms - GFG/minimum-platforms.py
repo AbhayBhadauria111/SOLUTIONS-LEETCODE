@@ -14,8 +14,9 @@ class Solution:
         for i in range(1,n):
             if Heap[0]<Arr[i][0]:
                 heapq.heappop(Heap)
-            heapq.heappush(Heap,Arr[i][1])
-     
+                heapq.heappush(Heap,Arr[i][1])
+            else:
+                heapq.heappush(Heap,Arr[i][1])
         return len(Heap)
             
             

@@ -6,33 +6,32 @@ class Node:
         self.next = next
         self.random = random
 """
-
+#         PUtting in dummy NOdes between nodes to acheive result without dictionary
 class Solution:
     def copyRandomList(self, head: 'Optional[Node]') -> 'Optional[Node]':
         if head is None:
             return None
-        D={}
         curr=head
         while(curr!=None):
-            if curr==head:
-                HEAD=Node(curr.val)
-                curr2=HEAD
-                D[curr]=curr2
-            else:
-                N=Node(curr.val)
-                curr2.next=N
-                curr2=curr2.next
-                D[curr]=N
-            curr=curr.next
-        curr2=HEAD
+            N=Node(curr.val,curr.next,curr.random)
+            curr.next=N
+            curr=N.next
         curr=head
-        while(curr!=None):
+        curr2=head.next
+        while(curr2!=None):
             if curr.random:
-                curr2.random=D[curr.random]
+                curr2.random=curr.random.next
+            if curr2.next==None:
+                break
+            curr=curr.next.next
+            curr2=curr2.next.next
+        curr=head.next
+        while(curr!=None and curr.next!=None):
+            curr.next=curr.next.next
             curr=curr.next
-            curr2=curr2.next
-        return HEAD
-                
+        curr=head.next
+        while(curr!=None):
+            curr=curr.next
+        return head.next
         
-            
         

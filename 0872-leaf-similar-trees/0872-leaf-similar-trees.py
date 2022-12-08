@@ -7,7 +7,9 @@
 class Solution:
     def leafSimilar(self, root1: Optional[TreeNode], root2: Optional[TreeNode]) -> bool:
         def solve(root,A):
-            if root.left==None and root.right==None:
+            if root==None:
+                return None
+            elif root.left==None and root.right==None:
                 A.append(root.val)
             else:
                 if root.left:

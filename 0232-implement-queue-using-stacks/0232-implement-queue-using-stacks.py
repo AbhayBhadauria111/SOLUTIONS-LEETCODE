@@ -1,40 +1,21 @@
-class Node:
-    def __init__(self,val):
-        self.val=val
-        self.next=None
-        self.prev=None
-class DD:
-    def __init__(self):
-        self.head=Node(-1)
-        self.tail=Node(-1)
-        self.head.next=self.tail
-        self.tail.prev=self.head
 class MyQueue:
 
     def __init__(self):
-        self.A=DD()
+        self.A=[]
+        
 
     def push(self, x: int) -> None:
-        new=Node(x)
-        self.A.tail.prev.next=new
-        new.prev=self.A.tail.prev
-        new.next=self.A.tail
-        self.A.tail.prev=new
+        self.A.append(x)
         
-
 
     def pop(self) -> int:
-        a=self.A.head.next.val
-        self.A.head.next=self.A.head.next.next
-        self.A.head.next.prev=self.A.head
-        return a
+        return self.A.pop(0)
 
     def peek(self) -> int:
-        return self.A.head.next.val
-        
+        return self.A[0]
 
     def empty(self) -> bool:
-        return self.A.head.next==self.A.tail
+        return len(self.A)==0
         
 
 

@@ -6,7 +6,7 @@ public:
         int temp=0;
         for(int x:weights)
         {
-          if(temp+x<=cap)temp+=x;
+          if((temp+x)<=cap)temp+=x;
             else
             {
                 temp=x;
@@ -16,12 +16,28 @@ public:
         return i<=days;
     }
     int shipWithinDays(vector<int>& weights, int days) {
-        int cap=*max_element(weights.begin(),weights.end());
-        while(true)
+        int cap;
+        int start=0,end=0;
+        for(int i:weights)
         {
-            if(canship(cap,weights,days))return cap;
-            else cap++;
+            end+=i;
+            start=max(start,i);
         }
-        return cap;
+        end+=1;
+        int ans;
+        while(start<end)
+        {
+            cap=(start+end)/2;
+            if(canship(cap,weights,days))
+            {
+                ans=cap;
+                end=cap;   
+            }
+            else
+            {
+                start=cap+1;
+            }
+        }
+        return ans;
     }
 };

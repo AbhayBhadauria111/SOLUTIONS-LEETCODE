@@ -1,15 +1,14 @@
 class Solution {
 public:
     int findCenter(vector<vector<int>>& edges) {
-        map<int,int>nodecount;
-        for(auto x:edges)
+        vector<bool>nodes(edges.size()+1,false);
+        for(vector<int>x:edges)
         {
-            if(nodecount.find(x[0])==nodecount.end())nodecount[x[0]]=1;
-            else nodecount[x[0]]++;
-            if(nodecount.find(x[1])==nodecount.end())nodecount[x[1]]=1;
-            else nodecount[x[1]]++;
+            if(nodes[x[0]-1]==true)return x[0];
+            else nodes[x[0]-1]=true;
+            if(nodes[x[1]-1]==true)return x[1];
+            else nodes[x[1]-1]=true;
         }
-        for(auto x:nodecount){if(x.second>1)return x.first;}
         return 0;
     }
 };

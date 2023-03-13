@@ -1,27 +1,27 @@
 class Solution {
 public:
+    vector<bool>visited;
     vector<vector<int>>ans;
-    void swap(int i,vector<int>&arr,int s)
+    void solve(vector<int>& nums,vector<int>curr)
     {
-        int temp=arr[i];
-        arr[i]=arr[s];
-        arr[s]=temp;
-    }
-    void solve(vector<int>&nums,int start)
-    {
-        if(start==nums.size()-1){ans.push_back(nums);return;}
-        for(int i=start;i<nums.size();i++)
+        if(curr.size()==nums.size())ans.push_back(curr);
+        else
         {
-            swap(i,nums,start);
-            solve(nums,start+1);
-            swap(i,nums,start);
+         
+            for(int i=0;i<nums.size();i++)
+                if(visited[i]==false)
+                {
+                    curr.push_back(nums[i]);
+                    visited[i]=true;
+                    solve(nums,curr);
+                    visited[i]=false;
+                    curr.pop_back();
+                }
         }
     }
     vector<vector<int>> permute(vector<int>& nums) {
-        solve(nums,0);
-        return ans;
+        for(int i=0;i<nums.size();i++)visited.push_back(false);
+        solve(nums,{});
+     return ans;   
     }
 };
-            
-            
-        

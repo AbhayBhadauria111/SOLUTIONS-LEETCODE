@@ -11,54 +11,46 @@
  */
 class Solution {
 public:
-    bool lastlevel(vector<TreeNode*>arr)
-    {
-       for(auto x: arr)
-       {
-           if(x!=nullptr and (x->left!=nullptr or x->right!=nullptr))return false;
-           
-       }
-        return true;
-    }
-    bool nullexists(vector<TreeNode*>arr)
-    {
-        for(auto x: arr)if(x==nullptr)return true;
-        return false;
-    }
-    bool valid(vector<TreeNode*>arr)
-    {
-        for(int i=0;i<arr.size()-1;i++)
-        {
-            if(arr[i]==nullptr and arr[i+1]!=nullptr )return false;   
-        }
-        return true;
-    }
     bool isCompleteTree(TreeNode* root) {
-        vector<TreeNode*>currlevel;
-        vector<TreeNode*>nextlevel;
-        currlevel.push_back(root);
-        while(!currlevel.empty())
+        queue<vector<TreeNode*>>Q;
+        vector<TreeNode*>next;
+        Q.push({root});
+        vector<TreeNode*>curr;
+        int last=0;
+        while(!Q.empty())
         {
-            nextlevel.clear();
-            for(auto x:currlevel)
+            
+            next.clear();
+            curr=Q.front();Q.pop();
+            for(auto x:curr)
             {
-                if(x->left)nextlevel.push_back(x->left);
-                else nextlevel.push_back(nullptr);
-                if(x->right)
-                nextlevel.push_back(x->right);
-                else nextlevel.push_back(nullptr);
+                if(x!=nullptr)
+                {
+                    next.push_back(x->left);
+                next.push_back(x->right);}
             }
-            if(lastlevel(nextlevel))
+            // for(auto x:next)if(x==nullptr)cout<<"null ";else cout<<x->val<<" ";cout<<endl;
+            for(int i=0;i<next.size();i++)
             {
-                if(valid(nextlevel))return true;
-                return false;
+                if(last and next[i]!=nullptr)return false;
             }
-            else
+            int flag=0;
+            last=0;
+            
+            for(int i=next.size()-1;i>=0;i--)
             {
-            if(nullexists(nextlevel))return false;
-             currlevel=nextlevel;  
+                if(next[i]==nullptr)last++;
+                if(next[i]==nullptr and flag==1)return false;
+                else
+                {
+                    if(next[i]!=nullptr)flag=1;
+                    
+                }
             }
+            if(next.size()>0)
+         Q.push(next);   
         }
-        return false;
+        return true;
+        
     }
 };

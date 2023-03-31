@@ -11,15 +11,22 @@
  */
 class Solution {
 public:
+    map<vector<int>,vector<TreeNode*>>D;
     vector<TreeNode*> generateTrees(int n) {
         vector<TreeNode*>ans=solve(1,n);
         return ans;
     }
     vector<TreeNode*>solve(int start,int end)
     {
+        if(D[{start,end}].size()!=0)return D[{start,end}];
         if(start>end)
         {
             return {nullptr};
+        }
+        if(start==end)
+        {
+            TreeNode* Node=new TreeNode(start);
+            return {Node};
         }
         else
         {
@@ -40,6 +47,7 @@ public:
                     }
                 }
             }
+            D[{start,end}]=temp;
             return temp;
         }
     }

@@ -1,31 +1,25 @@
 class Solution {
 public:
-    void joinprovince(vector<vector<int>>& isConnected,vector<int> &visited,int start)
-    {
-        int n=isConnected[0].size();
-        visited[start]=true;
-        for(int i=0;i<n;i++)
-        {
-            if(visited[i]==false and isConnected[start][i]==1)
-            {
-                visited[i]=true;
-                joinprovince(isConnected,visited,i);
-            }
-        }
-    }
     int findCircleNum(vector<vector<int>>& isConnected) {
-        int n=isConnected.size();
-        vector<int> visited(n,false);
+        vector<bool>visited(isConnected.size(),false);
         int count=0;
-        for(int start=0;start<n;start++)
+        for(int i=0;i<isConnected.size();i++)
         {
-            if(visited[start]==false)
+            if(!visited[i])
             {
+                visit(i,isConnected,visited);
                 count++;
-                joinprovince(isConnected,visited,start);
             }
         }
         return count;
-        
+    }
+private:
+    void visit(int i,vector<vector<int>>&graph,vector<bool>&visited)
+    {
+        visited[i]=true;
+        for(int j=0;j<graph.size();j++)
+        {
+            if(graph[i][j]==1 and visited[j]==false)visit(j,graph,visited);
+        }
     }
 };

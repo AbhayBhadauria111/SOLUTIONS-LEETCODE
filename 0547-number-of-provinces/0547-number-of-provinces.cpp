@@ -1,25 +1,33 @@
 class Solution {
 public:
+//     USING DISJOINT SET
     int findCircleNum(vector<vector<int>>& isConnected) {
-        vector<bool>visited(isConnected.size(),false);
-        int count=0;
+        vector<int>parent(isConnected.size(),0);
+        for(int i=0;i<isConnected.size();i++)
+            parent[i]=i;
         for(int i=0;i<isConnected.size();i++)
         {
-            if(!visited[i])
+            for(int j=0;j<isConnected.size();j++)
             {
-                visit(i,isConnected,visited);
-                count++;
+                if(isConnected[i][j]==1)
+                {
+                    int u=find(i,parent);
+                    int v=find(j,parent);
+                    if(u!=v)
+                    {
+                        parent[u]=parent[v];
+                    }
+                }
             }
         }
-        return count;
+        for(int i=0;i<parent.size();i++)parent[i]=find(i,parent);
+        unordered_set<int>S(parent.begin(),parent.end());
+        return S.size();
     }
 private:
-    void visit(int i,vector<vector<int>>&graph,vector<bool>&visited)
+    int find(int node,vector<int>&parent)
     {
-        visited[i]=true;
-        for(int j=0;j<graph.size();j++)
-        {
-            if(graph[i][j]==1 and visited[j]==false)visit(j,graph,visited);
-        }
+        if(parent[node]==node)return node;
+        else return parent[node]=find(parent[node],parent);
     }
 };

@@ -3,6 +3,7 @@ public:
 //     USING DISJOINT SET
     int findCircleNum(vector<vector<int>>& isConnected) {
         vector<int>parent(isConnected.size(),0);
+        vector<int>rank(isConnected.size(),0);
         for(int i=0;i<isConnected.size();i++)
             parent[i]=i;
         for(int i=0;i<isConnected.size();i++)
@@ -15,7 +16,19 @@ public:
                     int v=find(j,parent);
                     if(u!=v)
                     {
-                        parent[u]=parent[v];
+                        if(rank[u]>rank[v])
+                        {
+                            parent[v]=u;
+                        }
+                        else if(rank[v]>rank[u])
+                        {
+                            parent[u]=v;
+                        }
+                        else
+                        {
+                         parent[v]=u;
+                        rank[u]++;
+                        }
                     }
                 }
             }

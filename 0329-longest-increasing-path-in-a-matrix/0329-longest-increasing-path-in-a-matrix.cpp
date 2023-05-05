@@ -22,7 +22,7 @@ public:
 private:
     bool canput(int i,int j,vector<vector<int>>&M,int curr)
     {
-        if(i<0 or i>=n or j<0 or j>=m or M[i][j]<=curr)return false;
+        if(i<0 or i>=n or j<0 or j>=m or M[i][j]<=curr or visited[i][j]==true)return false;
         return true;
     }
     int solve(int i,int j,vector<vector<int>>&M)
@@ -30,6 +30,7 @@ private:
         if(DP[i][j]!=-1)return DP[i][j];
         else
         {
+            
             int temp=0;
             for(auto x:dir)
             {
@@ -37,7 +38,9 @@ private:
                 int newy=j+x[1];
                 if(canput(newx,newy,M,M[i][j]))
                 {
+                    visited[i][j]=true;
                     temp=max(temp,solve(newx,newy,M));
+                    visited[i][j]=false;
                 }
             }
             DP[i][j]=1+temp;

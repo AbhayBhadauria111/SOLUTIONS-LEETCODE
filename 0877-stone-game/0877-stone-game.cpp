@@ -1,16 +1,30 @@
 class Solution {
 public:
     bool stoneGame(vector<int>& piles) {
-        vector<vector<int>>DP(piles.size(),vector<int>(piles.size(),INT_MIN));
-        int score=solve(0,piles.size()-1,piles,DP);
-        if(score)return true;
-        return false;
-    }
-private:
-    int solve(int i,int j,vector<int>&piles,vector<vector<int>>&DP)
-    {
-        if(i==j)return piles[i];
-        if(DP[i][j]!=INT_MIN)return DP[i][j];
-        return DP[i][j]=max(piles[i]-solve(i+1,j,piles,DP),piles[j]-solve(i,j-1,piles,DP));
+        int n=piles.size();
+        vector<vector<int>>DP(n,vector<int>(n,0));
+        for(int i=n-1;i>=0;i--)
+        {
+            for(int j=0;j<n;j++)
+            {
+                if(i==n-1 and j==0)
+                {
+                    DP[i][j]=piles[i];
+                }
+                else if(i==n-1)
+                {
+                    DP[i][j]=piles[j]-DP[i][j-1];
+                }
+                else if(j==0)
+                {
+                    DP[i][j]=piles[i]-DP[i+1][j];
+                }
+                else
+                {
+                    DP[i][j]=max(piles[i]-DP[i+1][j],piles[j]-DP[i][j-1]);
+                }
+            }
+        }
+        return DP[0][n-1];   
     }
 };

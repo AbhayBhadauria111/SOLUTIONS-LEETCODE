@@ -1,18 +1,18 @@
 class Solution {
 public:
     int countVowelStrings(int n) {
-        vector<vector<int>>DP(n+1,vector<int>(5,0));
-        int i=0;
-        for(int j=0;j<5;j++)DP[n][j]=1;
-        for(int i=n-1;i>=0;i--)
+        vector<int>curr(5,0);
+        vector<int>prev={1,1,1,1,1};
+        while(n!=0)
         {
-            for(int j=4;j>=0;j--)
+            n-=1;
+            for(int j=0;j<5;j++)
             {
-                int temp=0;
-                for(int k=j;k<5;k++)temp+=DP[i+1][k];
-                DP[i][j]=temp;
+                int temp=accumulate(prev.begin()+j,prev.end(),0);
+                curr[j]=temp;
             }
+            curr.swap(prev);
         }
-        return DP[0][0];
+        return prev[0];
     }
 };

@@ -1,22 +1,18 @@
 class Solution {
 public:
     int countVowelStrings(int n) {
-        vector<vector<int>>DP(n,vector<int>(5,0));
-        return solve(0,0,n,DP);
-    }
-private:
-    int solve(int curr,int last,int n,vector<vector<int>>&DP)
-    {
-        if(curr==n)return 1;
-        else
+        vector<vector<int>>DP(n+1,vector<int>(5,0));
+        int i=0;
+        for(int j=0;j<5;j++)DP[n][j]=1;
+        for(int i=n-1;i>=0;i--)
         {
-            if(DP[curr][last]!=0)return DP[curr][last];
-            int temp=0;
-            for(int i=last;i<5;i++)
+            for(int j=4;j>=0;j--)
             {
-                temp+=solve(curr+1,i,n,DP);
+                int temp=0;
+                for(int k=j;k<5;k++)temp+=DP[i+1][k];
+                DP[i][j]=temp;
             }
-            return DP[curr][last]=temp;
         }
+        return DP[0][0];
     }
 };

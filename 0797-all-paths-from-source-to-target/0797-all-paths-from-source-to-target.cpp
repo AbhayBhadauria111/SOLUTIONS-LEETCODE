@@ -1,22 +1,28 @@
 class Solution {
 public:
-    vector<vector<int>>ans;
-    int n;
-    void solve(vector<int>&currpath,vector<vector<int>>& graph)
-    {
-        if(currpath.back()==n-1)ans.push_back(currpath);
-        for(auto x:graph[currpath.back()])
-        {
-            currpath.push_back(x);
-            solve(currpath,graph);
-            currpath.pop_back();
-        }
-    }
     vector<vector<int>> allPathsSourceTarget(vector<vector<int>>& graph) {
-        n=graph.size();
-        vector<int>currpath;
-        currpath.push_back(0);
-        solve(currpath,graph);
+        auto x=solve(0,graph);
+        for(auto &temp:x)
+        {
+            temp.push_back(0);
+            reverse(temp.begin(),temp.end());
+        }
+        return x;
+    }
+private:
+    vector<vector<int>>solve(int curr,vector<vector<int>>& graph)
+    {
+        if(curr==(int)graph.size()-1)return {{}};
+        vector<vector<int>>ans;
+        for(auto x:graph[curr])
+        {
+            vector<vector<int>>temp=solve(x,graph);
+            for(auto &y:temp)
+            {
+                y.push_back(x);
+                ans.push_back(y);
+            }
+        }
         return ans;
     }
 };

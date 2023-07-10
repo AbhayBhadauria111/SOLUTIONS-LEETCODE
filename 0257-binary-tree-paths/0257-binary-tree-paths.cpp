@@ -12,49 +12,16 @@
 class Solution {
 public:
     vector<string> binaryTreePaths(TreeNode* root) {
-        vector<stack<int>>A=solve(root);
-        vector<string>ans;
-        for(auto &x:A)
-        {
-            string s="";
-            while(!x.empty())
-            {
-                int temp=x.top();
-                s+=to_string(temp);
-                if(x.size()>1)s+="->";
-                x.pop();
-            }
-            ans.push_back(s);
-        }
-        for(auto x:ans)cout<<x<<" ";
-        return ans;
-    }
-private:
-    vector<stack<int>> solve(TreeNode* root)
-    {
         if(root==nullptr)return {};
-        if(root->left==nullptr && root->right==nullptr)
-        {
-            stack<int>S;
-            S.push(root->val);
-            return {S};
-        }
-        else
-        {
-            vector<stack<int>>left=solve(root->left);
-            vector<stack<int>>right=solve(root->right);
-            vector<stack<int>>ret;
-            for(auto x:left)
-            {
-                x.push(root->val);
-                ret.push_back(x);
-            }
-            for(auto x:right)
-            {
-                x.push(root->val);
-                ret.push_back(x);
-            }
-            return ret;
-        }
+        if(root->left==nullptr && root->right==nullptr)return {to_string(root->val)};
+        vector<string>left=binaryTreePaths(root->left);
+        vector<string>right=binaryTreePaths(root->right);
+        vector<string>ans;
+        for(auto &x:left)
+            ans.push_back(to_string(root->val)+"->"+x);
+        for(auto &x:right)
+            ans.push_back(to_string(root->val)+"->"+x);
+        return ans;
+            
     }
 };

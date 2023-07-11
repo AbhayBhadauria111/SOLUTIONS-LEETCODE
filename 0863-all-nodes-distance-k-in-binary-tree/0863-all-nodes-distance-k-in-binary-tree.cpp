@@ -23,32 +23,27 @@ private:
             traverse(root->right,parent);
         }
     }
+    vector<int>solve(TreeNode* root,int k,unordered_set<TreeNode*>&vis, unordered_map<TreeNode*,TreeNode*>&parent)
+    {
+        if(root==nullptr)return {};
+        if(k==0)return {root->val};
+        vis.insert(root);
+        vector<int>left,right,par;
+        if(vis.find(root->left)==vis.end())left=solve(root->left,k-1,vis,parent);
+        if(vis.find(root->right)==vis.end())right=solve(root->right,k-1,vis,parent);
+        if(vis.find(parent[root])==vis.end())par=solve(parent[root],k-1,vis,parent);
+        vector<int>ret;
+        for(auto x:left)ret.push_back(x);
+        for(auto x:right)ret.push_back(x);
+        for(auto x:par)ret.push_back(x);
+        return ret;
+    }
 public:
     vector<int> distanceK(TreeNode* root, TreeNode* target, int k) {
         unordered_map<TreeNode*,TreeNode*>parent;
         traverse(root,parent);
         unordered_set<TreeNode*>vis;
-        queue<vector<TreeNode*>>Q;
-        Q.push({target});
-        int count=0;
-        parent[root]=nullptr;
-        while(count<k)
-        {
-            count++;
-            vector<TreeNode*>curr=Q.front();Q.pop();
-            vector<TreeNode*>next;
-            for(auto &x:curr)
-            {
-                vis.insert(x);
-                if(x->left!=nullptr and vis.find(x->left)==vis.end())next.push_back(x->left);
-                if(x->right!=nullptr and vis.find(x->right)==vis.end())next.push_back(x->right);
-                if(parent[x]!=nullptr and vis.find(parent[x])==vis.end())next.push_back(parent[x]);
-            }
-            Q.push(next);
-        }
-        vector<int>ans;
-        for(auto x:Q.front())ans.push_back(x->val);
-        return ans;
+        return solve(target,k,vis,parent);
 
     }
 };

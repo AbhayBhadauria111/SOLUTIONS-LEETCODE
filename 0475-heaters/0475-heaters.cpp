@@ -1,40 +1,27 @@
 class Solution {
-    int binary(int target,vector<int>& heaters)
-    {
-        int i=0,j=heaters.size()-1;
-        int ret=0;
-        while(i<=j)
-        {
-            int mid=(i+j)/2;
-            if(heaters[mid]==target){return mid;}
-            if(heaters[mid]<target)
-            {
-                ret=mid;
-                i=mid+1;
-            }
-            else j=mid-1;
-        }
-        return ret;
-    }
 public:
     int findRadius(vector<int>& houses, vector<int>& heaters) {
-        int ans=INT_MIN;
         sort(houses.begin(),houses.end());
         sort(heaters.begin(),heaters.end());
-        // for(auto x:heaters)cout<<x<<" ";cout<<endl;
-        for(auto house:houses)
+        int low=0,high=max(abs(heaters.back()-houses[0]),abs(houses.back()-heaters[0]));
+        while(low<high)
         {
-            int ind=binary(house,heaters);
-            int cur_rad=INT_MAX;
-            if(heaters[ind]==house)cur_rad=0;
-            else
-            {
-                cur_rad=abs(heaters[ind]-house);
-                if(ind+1<heaters.size())cur_rad=min(cur_rad,abs(heaters[ind+1]-house));
-            }
-            // cout<<house<<" "<<cur_rad<<" "<<heaters[ind]<<endl;
-            ans=max(ans,cur_rad);
+            int mid=low+(high-low)/2;
+            if(canCover(mid,houses,heaters))high=mid;
+            else low=mid+1;
         }
-        return ans;
+        return low;
+    }
+private:
+    bool canCover(int mid,vector<int>& houses, vector<int>& heaters)
+    {
+        int i=0;
+        for(auto x:houses)
+        {
+            while(i<heaters.size() and abs(x-heaters[i])>mid )i++;   
+            if(i==heaters.size() and abs(x-heaters[i-1])>mid )return false;
+        }
+        return true;
+        
     }
 };

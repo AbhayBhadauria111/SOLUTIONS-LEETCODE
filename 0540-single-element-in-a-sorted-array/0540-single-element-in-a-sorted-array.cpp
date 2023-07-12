@@ -1,10 +1,13 @@
 class Solution {
 public:
     int singleNonDuplicate(vector<int>& nums) {
-        for(int i=0;i<nums.size()-1;i=i+2)
+        int low=0,high=(nums.size()-1)/2;
+        while(low<high)
         {
-            if(nums[i]!=nums[i+1])return nums[i];
+            int mid=low+(high-low)/2;
+            if(nums[2*mid]!=nums[2*mid+1])high=mid;
+            else low=mid+1;
         }
-        return nums[nums.size()-1];
+        return nums[2*low];
     }
 };

@@ -1,26 +1,19 @@
 class Solution {
-private:
-    bool diff(vector<int>&A)
-    {
-        int n=A.size();
-        if(A[n-2]>0 and A[n-1]<0)return true;
-        return false;
-    }
 public:
     vector<int> asteroidCollision(vector<int>& asteroids) {
         vector<int>arr;
-        for(auto x:asteroids)
+        arr.push_back(asteroids[0]);
+        bool flag=0;
+        for(int i=1;i<asteroids.size();i++)
         {
-            arr.push_back(x);
-            while(arr.size()>=2 and diff(arr))
+            flag=0;
+            while(arr.size()>0 and arr.back()>0 and asteroids[i]<0)
             {
-                int a=arr[arr.size()-2];
-                int b=arr.back();
-                arr.pop_back();arr.pop_back();
-                if(abs(a)==abs(b))continue;
-                if(abs(a)>abs(b))arr.push_back(a);
-                else arr.push_back(b);
+                if(abs(arr.back())==abs(asteroids[i])){arr.pop_back();flag=1;break;}
+                else if(abs(arr.back())>abs(asteroids[i])){flag=1;break;}
+                else arr.pop_back();
             }
+            if(!flag)arr.push_back(asteroids[i]);
         }
         return arr;
     }

@@ -1,27 +1,26 @@
 class Solution {
-private:
-    map<pair<int,int>,int>DP;
-    int solve(int i,int j,string &word1, string &word2)
-    {
-        if(j<0)return i+1; 
-        if(i<0)return j+1;
-        else
-        {
-            if(DP.find({i,j})!=DP.end())return DP[{i,j}];
-            if(word1[i]==word2[j])return solve(i-1,j-1,word1,word2);
-            else
-            {
-                int a,b,c;
-                a=1+solve(i-1,j-1,word1,word2);//REPLACE A CHAR
-                b=1+solve(i-1,j,word1,word2);//DELETE A CHAR
-                c=1+solve(i,j-1,word1,word2);//INSERT A CHAR
-                // cout<<i<<" "<<j<<" "<<a<<" "<<b<<" "<<c<<endl;
-                return DP[{i,j}]=min(a,min(b,c));
-            }
-        }
-    }
 public:
     int minDistance(string word1, string word2) {
-        return solve(word1.size()-1,word2.size()-1,word1,word2);
+        vector<vector<int>>DP(word1.size()+1,vector<int>(word2.size()+1,0));
+        for(int i=0;i<=word1.size();i++)
+        {
+            for(int j=0;j<=word2.size();j++)
+            {
+                if(i==0 or j==0)
+                {
+                    if(i==0)DP[i][j]=j;
+                    if(j==0)DP[i][j]=i;
+                }
+                else
+                {
+                    if(word1[i-1]==word2[j-1])DP[i][j]=DP[i-1][j-1];
+                    else
+                    {
+                        DP[i][j]=min(DP[i-1][j-1],min(DP[i][j-1],DP[i-1][j]))+1;
+                    }
+                }
+            }
+        }
+        return DP[word1.size()][word2.size()];
     }
 };

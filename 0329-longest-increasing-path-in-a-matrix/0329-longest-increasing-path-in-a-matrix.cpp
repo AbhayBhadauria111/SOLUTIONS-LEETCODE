@@ -1,51 +1,32 @@
 class Solution {
-    vector<vector<bool>>visited;
-    vector<vector<int>>DP;
-    int n,m;
-    vector<vector<int>>dir={{1,0},{-1,0},{0,1},{0,-1}};
+    vector<vector<int>>dir{{0,1},{0,-1},{1,0},{-1,0}};
+    int solve(int i,int j,vector<vector<int>>& matrix,vector<vector<int>>& DP,int last)
+    {
+        if(i>-1 and j>-1 and i<DP.size() and j<DP[0].size() and matrix[i][j]>last)
+        {
+            if(DP[i][j]!=0)return DP[i][j];
+            int temp=0;
+            for(auto x:dir)
+            {
+                temp=max(solve(i+x[0],j+x[1],matrix,DP,matrix[i][j]),temp);
+            }
+            return DP[i][j]=(temp+1);
+        }
+        return 0;
+    }
 public:
     int longestIncreasingPath(vector<vector<int>>& matrix) {
-        n=matrix.size();
-        m=matrix[0].size();
-        visited.resize(n,vector<bool>(m,false));
-        DP.resize(n,vector<int>(m,-1));
+        int n=matrix.size(),m=matrix[0].size();
+        vector<vector<int>>DP(matrix.size(),vector<int>(matrix[0].size(),0));
         int ans=0;
         for(int i=0;i<n;i++)
         {
             for(int j=0;j<m;j++)
             {
-                ans=max(ans,solve(i,j,matrix));
+                if(DP[i][j]==0)solve(i,j,matrix,DP,-1);
+                ans=max(DP[i][j],ans);
             }
         }
         return ans;
-    }
-private:
-    bool canput(int i,int j,vector<vector<int>>&M,int curr)
-    {
-        if(i<0 or i>=n or j<0 or j>=m or M[i][j]<=curr or visited[i][j]==true)return false;
-        return true;
-    }
-    int solve(int i,int j,vector<vector<int>>&M)
-    {
-        if(DP[i][j]!=-1)return DP[i][j];
-        else
-        {
-            
-            int temp=0;
-            for(auto x:dir)
-            {
-                int newx=i+x[0];
-                int newy=j+x[1];
-                if(canput(newx,newy,M,M[i][j]))
-                {
-                    visited[i][j]=true;
-                    temp=max(temp,solve(newx,newy,M));
-                    visited[i][j]=false;
-                }
-            }
-            DP[i][j]=1+temp;
-            return DP[i][j];
-        }
-        
     }
 };

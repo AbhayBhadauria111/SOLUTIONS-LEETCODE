@@ -1,37 +1,26 @@
 class Solution {
-private:
-    int solve(int ind,string &s,int &k,vector<int>&DP)
+protected:
+    int solve(int ind,string &s,int k,unordered_map<int,int>&DP)
     {
         if(ind==s.size())return 1;
         else
         {
+            if(DP.find(ind)!=DP.end())return DP[ind];
             if(s[ind]=='0')return 0;
-            if(DP[ind]!=-1)return DP[ind];
-            int count=0;
-            int i=ind;
-            while(i<s.size())
+            long long temp=0;
+            int ret=0;
+            for(int i=ind;i<s.size();i++)
             {
-                if(valid(s,ind,i,k))
-                {
-                    count=(count+solve(i+1,s,k,DP))%(1000000007);i++;
-                }
-                else
-                {
-                    break;
-                }
+                temp=temp*10+(s[i]-'0');
+                if(temp>k)break;
+                ret=(ret+solve(i+1,s,k,DP))%(1000000007);
             }
-            return DP[ind]=count;
-            
+            return DP[ind]=(ret)%(1000000007);
         }
-    }
-    bool valid(string &s,int &start,int &end,int &k)
-    {
-        if(stoll(s.substr(start,end-start+1))<=k)return true;
-        return false;
     }
 public:
     int numberOfArrays(string s, int k) {
-        vector<int>DP(s.size(),-1);
+        unordered_map<int,int>DP;
         return solve(0,s,k,DP);
     }
 };

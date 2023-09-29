@@ -12,28 +12,22 @@
 class Solution {
 public:
     TreeNode* pruneTree(TreeNode* root) {
-        return prune(root);
-    }
-private:
-    TreeNode* prune(TreeNode*root)
-    {
         if(root==nullptr)return nullptr;
         else
         {
-            if(root->left)
+            auto left=pruneTree(root->left);
+            auto right=pruneTree(root->right);
+            if(root->val!=1 and left==nullptr and right==nullptr)
             {
-                root->left=prune(root->left);
+                delete root;
+                return nullptr;
             }
-            if(root->right)
+            else
             {
-                root->right=prune(root->right);
+                root->left=left;
+                root->right=right;
+                return root;
             }
-            if(root->left==nullptr and root->right==nullptr)
-                {
-                    if(root->val==0)return nullptr;
-                    else return root;
-                }
-            return root;
         }
     }
 };

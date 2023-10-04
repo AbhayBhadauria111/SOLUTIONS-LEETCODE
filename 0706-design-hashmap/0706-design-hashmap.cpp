@@ -1,21 +1,21 @@
 class MyHashMap {
-    vector<int>map;
+    vector<int>arr;
 public:
     MyHashMap() {
-        map.resize(1e6+1,-1);
+        arr.clear();
+        arr.resize(1e6+1,-1);
     }
     
     void put(int key, int value) {
-        map[key]=value;
+        arr[key]=value;
     }
     
     int get(int key) {
-        if(map[key]!=-1)return map[key];
-        return -1;
+        return arr[key];
     }
     
     void remove(int key) {
-        map[key]=-1;
+       arr[key]=-1; 
     }
 };
 

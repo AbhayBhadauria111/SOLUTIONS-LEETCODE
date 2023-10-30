@@ -1,30 +1,68 @@
-class Trie {
+class Node{
 public:
-    unordered_set<string>T;
+    Node* arr[26];
+    bool end=false;
+    bool contains(char c)
+    {
+        return arr[c-'a']!=nullptr;
+    }
+    Node* get(char c)
+    {
+        return arr[c-'a'];
+    }
+    void put(char c)
+    {
+        arr[c-'a']=new Node();
+    }
+};
+class Trie {
+    Node* root=new Node();
+public:
     Trie() {
-        
+        // Node root;                                                                                          
     }
     
     void insert(string word) {
-        T.insert(word);
+        Node* temp=root;
+        for(char c:word)
+        {
+            if(temp->contains(c))
+            {
+                temp=temp->get(c);
+            }
+            else
+            {
+                temp->put(c);
+                temp=temp->get(c);
+            }
+        }
+        temp->end=true;
     }
     
     bool search(string word) {
-        if(T.find(word)!=T.end())return true;
-        return false;
+        Node *temp=root;
+        for(char c:word)
+        {
+            if(!temp->contains(c))
+            {
+                return false;
+            }
+            temp=temp->get(c);
+        }
+        return temp->end;
     }
     
     bool startsWith(string prefix) {
-        for(auto x:T)
+        Node *temp=root;
+        for(char c:prefix)
         {
-            if(x.size()<prefix.size())continue;
-            for(int i=0;i<prefix.size();i++)
+            if(!temp->contains(c))
             {
-                if(i<=x.size()-1 and i==prefix.size()-1 and x[i]==prefix[i])return true;
-                if(x[i]!=prefix[i])break;
+                return false;
             }
+            temp=temp->get(c);
         }
-        return false;
+        return true;
     }
 };
 
